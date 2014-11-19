@@ -1,2 +1,2 @@
-EnumJS
+enum-js
 ======
