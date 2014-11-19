@@ -1,8 +1,27 @@
 // Inspired by: https://github.com/adrai/enum.git
-// v0.2.5
-(function(root) {
+(function(name, factory) {
 
-	var _PROTECTED_KEYS = [ 'name', 'enums', 'getKey', 'getValue', 'get' ];
+    if (typeof define === 'function') { // RequireJS
+        define(factory);
+    } else if (typeof module !== 'undefined' && module.exports) { // CommonJS
+        module.exports = factory();
+    } else { // Browser
+        this[name] = factory();
+    }
+
+})('enum', function(undefined) {
+
+	var PROTECTED_KEYS = [ 'name', 'enums', 'getKey', 'getValue', 'get' ],
+
+		toString = ({}).toString,
+
+		isString = function(obj) {
+	        return toString.call(obj) === '[object String]';
+	    },
+
+	    isArray = Array.isArray || function(obj) {
+	        return toString.call(obj) === '[object Array]';
+	    };
 
 	/**
 	 * Represents an Item of an Enum.
@@ -14,7 +33,7 @@
 		this.value = value;
 
 		if (key === undefined || key === null || value === undefined || value === null) {
-			throw new Error('EnumItem key and/or value is invalid');
+			throw 'EnumItem key and/or value is invalid';
 		}
 	};
 
@@ -26,12 +45,12 @@
 		 * @return {Boolean}                          The check result.
 		 */
 		is: function(key) {
-			if (_.isString(key)) {
+			if (_isString(key)) {
 
 				return (this.key === key);
 
 			} else if (key instanceof EnumItem) {
-				
+
 				return (this.key === key.key);
 
 			} else {
@@ -78,7 +97,7 @@
 		this.name = name;
 		this.enums = [];
 
-		if (_.isArray(map)) {
+		if (_isArray(map)) {
 			var array = map;
 			map = {};
 
@@ -90,8 +109,8 @@
 
 		var member;
 		for (member in map) {
-			if (_.indexOf(_PROTECTED_KEYS, member) > -1) {
-				throw new Error('Enum key "' + member + '" is a reserved word');
+			if (PROTECTED_KEYS.indexOf(member) > -1) {
+				throw 'Enum key "' + member + '" is a reserved word';
 			}
 
 			this[member] = new EnumItem(member, map[member]);
@@ -133,7 +152,7 @@
 		get: function(key) {
 			if (key === null || key === undefined) { return null; }
 
-			if (_.isString(key)) {
+			if (_isString(key)) {
 
 				return this[key];
 
@@ -161,6 +180,8 @@
 		}
 	};
 
-	root.Enum = Enum;
+	return function(name, map) {
+		return new Enum(name, map);
+	};
 
-}(this));
+}());
