@@ -1,0 +1,19 @@
+{
+  "name": "enum-js",
+  "version": "0.0.1",
+  "description": "",
+  "main": "enum.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JosephClay/enum-js.git"
+  },
+  "author": "JosephClay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JosephClay/enum-js/issues"
+  },
+  "homepage": "https://github.com/JosephClay/enum-js"
+}
